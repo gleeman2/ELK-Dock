@@ -1,0 +1,26 @@
+version: '3'
+services:
+ elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+  ports:
+   - 9200:9200
+   - 9300:9300
+  volumes:
+   - ./logconf/logstash.conf:/elk/config/logstash.conf
+   - ./logconf/isilon-syslog.conf:/elk/config/isilon-syslog.conf
+ logstash:
+  image: docker.elastic.co/logstash/logstash:6.4.3
+  ports:
+   - 5050:5050
+  volumes:
+   - ./logconf/logstash.conf:/config-dir/logstash.conf
+   - ./logconf/isilon-syslog.conf:/config-dir/isilon-syslog.conf
+ kibana
+  image: docker.elastic.co/kibana/kibana:6.4.3
+  ports:
+   - 5601:5601
+  volumes:
+  url:
+   - ELASTICSEARCH_URL=http://172.17.0.7:9200
+
+#https://leafyjava.com/articles/how-to-setup-elk-stack-with-docker-for-development
